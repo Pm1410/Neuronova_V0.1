@@ -3,6 +3,4 @@ __pycache__/
 *.pkl
 *.model
 *.log
-logs/
-data/
-.env
+
