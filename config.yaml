@@ -1,0 +1,103 @@
+# QuantBot Configuration
+# Edit this file to customize the trading system
+
+exchange:
+  name: bybit
+  testnet: true                  # Set false for live trading
+  api_key: "API _Key"          # Replace with your API key
+  api_secret: "API Secret"       # Replace with your API secret
+
+data:
+  symbols:
+    - BTC/USDT
+    - ETH/USDT
+    - SOL/USDT
+  timeframe: "1h"                 # 1m, 5m, 15m, 1h, 4h, 1d
+  history_years: 3
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+
+features:
+  # Technical indicators
+  rsi_periods: [7, 14, 21]
+  macd_params:
+    fast: 12
+    slow: 26
+    signal: 9
+  bbands_period: 20
+  atr_period: 14
+  volume_ma_periods: [10, 20]
+  # Microstructure
+  use_orderbook_features: false   # Requires WS connection
+  # Lag features
+  lag_periods: [1, 2, 3, 5, 10]
+  # Rolling stats windows
+  rolling_windows: [5, 10, 20, 50]
+
+labels:
+  method: "triple_barrier"        # triple_barrier | fixed_horizon | trend
+  # Triple barrier params
+  pt_sl_ratio: 1.0                # Profit-take / stop-loss ratio
+  stop_loss_atr_mult: 1.5        # Stop-loss = 1.5 * ATR
+  max_holding_bars: 24            # Max bars to hold (e.g. 24h on 1h tf)
+  min_return_threshold: 0.002    # Minimum return to be labeled signal
+
+model:
+  device: null                  # null=auto, cuda, gpu, cpu — set by setup_gpu.sh
+  type: lgbm
+  save_dir: "models/saved"
+  params:
+    objective: "multiclass"
+    num_class: 3                  # -1 (short), 0 (hold), 1 (long)
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    num_leaves: 63
+    min_child_samples: 50
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 5
+    lambda_l1: 0.1
+    lambda_l2: 0.1
+    verbose: -1
+  # Walk-forward cross validation
+  cv_splits: 5
+  test_size_bars: 720            # baseline — auto-scaled up if dataset is large
+                                # (e.g. 1m data: 525k bars → auto becomes ~52k per fold)
+                                # Rule: max(this, 10% of dataset), capped at 40%
+  early_stopping_rounds: 50
+
+backtest:
+  initial_capital: 10000         # USD
+  position_size_pct: 0.1        # 10% of capital per trade
+  max_positions: 3
+  commission_pct: 0.001         # 0.1% taker fee
+  slippage_pct: 0.0005          # 0.05% slippage estimate
+  stop_loss_pct: 0.02           # Hard stop 2%
+  take_profit_pct: 0.04         # Take profit 4%
+  min_confidence: 0.55          # Min model prob to enter
+
+inference:
+  mode: "paper"                  # paper | live
+  check_interval_sec: 60        # How often to check signals (match your timeframe)
+  max_open_positions: 2
+  risk_per_trade_pct: 0.02      # 2% risk per trade
+  leverage: 1                   # 1x = no leverage
+  order_type: "market"          # market fills immediately; limit may not fill
+  limit_offset_pct: 0.0002      # used only if order_type=limit
+  min_confidence: 0.40          # LOWERED from 0.55 — 45% signals will now trade
+  stop_loss_pct: 0.015          # 1.5% stop loss
+  take_profit_pct: 0.030        # 3.0% take profit (2:1 RR)
+  # max_hold_bars REMOVED — no arbitrary time-based exits
+  # Trailing stop — activates once position is in profit by trail_trigger_pct
+  trail_trigger_pct: 0.008      # start trailing after 0.8% profit
+  trail_distance_pct: 0.006     # trail SL 0.6% behind current price
+  lookback_candles: 300         # candles fetched per tick (300 > 200, better warmup)
+  paper_balance: 10000          # starting paper balance USD
+  daily_loss_limit_pct: 0.05    # stop trading if down 5% in a day
+ 
+logging:
+  level: INFO
+  log_dir: "logs"
+  trade_log: "logs/trades.csv"
+  model_log: "logs/model_metrics.json"
