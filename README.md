@@ -1,190 +1,301 @@
-# Crypto ML Trading Prototype
+# 🚀 Neuronova V0.1 — Crypto ML Trading Prototype
 
-A simple research prototype for cryptocurrency trading using machine
-learning.\
-The project collects market data, generates features, trains a model,
-and evaluates the strategy through backtesting and paper trading.
+<p align="center">
+Machine learning research prototype for cryptocurrency trading.<br>
+Collect data → engineer features → train ML model → evaluate through backtesting and paper trading.
+</p>
 
-This repository is **not a production trading system**. It is an
-experimental prototype built for research and testing purposes.
+<p align="center">
+<img src="https://img.shields.io/badge/Python-3.10+-blue">
+<img src="https://img.shields.io/badge/ML-LightGBM-green">
+<img src="https://img.shields.io/badge/Data-CCXT-orange">
+<img src="https://img.shields.io/badge/Status-Research-yellow">
+<img src="https://img.shields.io/badge/License-MIT-purple">
+</p>
 
-------------------------------------------------------------------------
+---
 
-## Overview
+# 🧠 Overview
 
-The pipeline is intentionally simple:
+**Neuronova V0.1** is a lightweight research framework designed to explore whether **machine learning models can extract trading signals from cryptocurrency market data**.
 
-1.  Fetch historical crypto market data
-2.  Generate features from price data
-3.  Create labels for supervised learning
-4.  Train a LightGBM model
-5.  Run backtesting on historical data
-6.  Simulate trades using paper trading
+The project provides a simple end-to-end pipeline that:
 
-The goal of this project is to test whether basic ML models can learn
-useful trading signals from engineered features.
+- collects historical market data  
+- generates technical features  
+- trains a machine learning model  
+- evaluates performance through backtesting  
+- simulates trading via paper trading
 
-------------------------------------------------------------------------
+The goal is **research and experimentation**, not production trading.
 
-## Workflow
+---
 
-Exchange Data (CCXT) │ ▼ Feature Engineering │ ▼ Label Generation │ ▼
-Dataset Storage │ ▼ LightGBM Training │ ▼ Backtesting │ ▼ Paper Trading
-Simulation
+# ⚙️ System Pipeline
 
-------------------------------------------------------------------------
+The workflow follows a straightforward ML trading pipeline:
 
-## Project Structure
+```
+Exchange Data (CCXT)
+        │
+        ▼
+Feature Engineering
+        │
+        ▼
+Label Generation
+        │
+        ▼
+Dataset Storage
+        │
+        ▼
+Model Training (LightGBM)
+        │
+        ▼
+Backtesting Engine
+        │
+        ▼
+Paper Trading Simulation
+```
 
+This pipeline allows quick iteration when testing new features, models, or strategies.
+
+---
+
+# ✨ Key Features
+
+### 📊 Market Data Collection
+Fetch historical **OHLCV cryptocurrency data** directly from exchanges using CCXT.
+
+### 🧮 Feature Engineering
+Generate technical indicators and engineered features from raw price data.
+
+### 🏷 Label Generation
+Create supervised learning labels for classification-based trading signals.
+
+### 🤖 Machine Learning Training
+Train a **LightGBM model** to detect potential trading opportunities.
+
+### 📉 Strategy Backtesting
+Evaluate trading strategies on historical data to estimate performance.
+
+### 💰 Paper Trading Simulation
+Simulate trades using model predictions without risking real capital.
+
+---
+
+# 🏗️ Project Structure
+
+```
 Neuronova_V0.1/
+│
+├── data/                 # Raw market datasets
+├── features/             # Feature engineered datasets
+├── labels/               # Labelled datasets
+├── models/               # Trained LightGBM models
+├── backtest/             # Backtesting engine
+├── logs/                 # Paper trading simulation logs
+│
+├── fetch_ohlcv.py        # Collect OHLCV data using CCXT
+├── feature_engine.py     # Feature engineering pipeline
+├── labeller.py           # Label generation
+├── trainer.py            # Train ML model
+├── backtester.py         # Strategy backtesting
+├── live_trader.py        # Paper trading simulator
+├── multi_train.py        # Run multiple training experiments
+│
+├── app.py                # Streamlit dashboard interface
+├── main.py               # Pipeline automation script
+├── config.yaml           # Project configuration
+│
+├── requirements.txt      # Python dependencies
+└── README.md
+```
 
-data/ \# Saved datasets\
-features/ \# Featured datasets\
-labels/ \# Labelled datasets\
-models/ \# Trained LightGBM models\
-backtest/ \# Backtesting engine\
-logs/ \# Paper trading simulation
+---
 
-fetch_ohlcv.py \# Collect data using CCXT\
-feature_engine.py \# Feature engineering\
-labeller.py \# Label generation\
-trainer.py \# Train LightGBM model\
-backtester.py \# Strategy backtesting\
-live_trader.py \# Paper trading simulation
-app.py \# Shows interactive Streamlit Webpage
-config.yaml \# Contain Configurations
-main.py \# To automate all steps in one go
-multi_train.py \# single script to run pipeline
+# 🧰 Technology Stack
 
-requirements.txt
-README.md
+| Component | Technology |
+|----------|------------|
+| Data Collection | CCXT |
+| Data Processing | Pandas, NumPy |
+| Machine Learning | LightGBM |
+| Model Evaluation | Scikit-learn |
+| Dashboard | Streamlit |
+| Programming Language | Python |
 
-------------------------------------------------------------------------
+---
 
-## Installation
+# ⚡ Installation
 
-Clone the repository:
+### 1️⃣ Clone Repository
 
-git clone https://github.com/yourusername/neuronova_v0.1.git cd
-Neuronova_V0.1
+```bash
+git clone https://github.com/YOUR_USERNAME/neuronova_v0.1.git
+cd Neuronova_V0.1
+```
 
-Install dependencies:
+### 2️⃣ Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-------------------------------------------------------------------------
+---
 
-## Dependencies
+# 🚀 Usage
 
-Main libraries used in the project:
+## 1️⃣ Fetch Market Data
 
--   ccxt
--   pandas
--   numpy
--   lightgbm
--   scikit-learn
+Download historical cryptocurrency data.
 
-------------------------------------------------------------------------
-
-## Usage
-
-### 1. Fetch Data
-
-Fetch historical OHLCV data from exchanges.
-
+```bash
 python fetch_ohlcv.py
+```
 
-### 2. Generate Features
+---
+
+## 2️⃣ Generate Features
 
 Create technical indicators and engineered features.
 
+```bash
 python feature_engine.py
+```
 
-### 3. Generate Labels
+---
 
-Label the dataset for supervised learning.
+## 3️⃣ Generate Labels
 
+Prepare training labels for the ML model.
+
+```bash
 python labeller.py
+```
 
-### 4. Train Model
+---
 
-Train the LightGBM classifier on the dataset.
+## 4️⃣ Train Machine Learning Model
 
+Train the LightGBM classifier.
+
+```bash
 python trainer.py
+```
 
-### 5. Run Backtest
+---
 
-Evaluate strategy performance on historical data.
+## 5️⃣ Run Backtesting
 
+Evaluate the trading strategy using historical data.
+
+```bash
 python backtester.py
+```
 
-### 6. Paper Trading
+---
 
-Simulate trades using the trained model.
+## 6️⃣ Simulate Paper Trading
 
+Run simulated trading without real money.
+
+```bash
 python live_trader.py
+```
 
-Note: Paper trading currently simulates trades only. Live trading with
-real funds has **not been tested**.
+---
 
-------------------------------------------------------------------------
+# 📊 Backtesting Metrics
 
-## Backtesting
+The backtesting module evaluates strategies using common trading metrics:
 
-The project includes a simple backtesting module that:
+| Metric | Description |
+|------|-------------|
+| Total Return | Overall strategy profitability |
+| Sharpe Ratio | Risk-adjusted returns |
+| Win Rate | Percentage of profitable trades |
+| Maximum Drawdown | Largest portfolio decline |
+| Number of Trades | Total executed trades |
 
--   Loads trained models
--   Generates predictions
--   Simulates trades
--   Computes basic performance metrics
+---
 
-Example metrics include:
+# ⚠️ Limitations
 
--   Total return
--   Sharpe ratio
--   Win rate
--   Maximum drawdown
--   Number of trades
+This project is intentionally simplified and has several limitations:
 
-------------------------------------------------------------------------
+- Limited feature engineering
+- Simplified backtesting engine
+- No transaction cost modeling
+- No slippage modeling
+- No portfolio management
+- No risk management module
+- No real-time execution validation
 
-## Limitations
+The framework is intended for **research experiments only**.
 
-This repository is a **basic prototype** and has several limitations:
+---
 
--   Limited feature set
--   Simplified backtesting engine
--   No slippage modeling
--   No transaction cost modeling
--   No risk management module
--   No portfolio optimization
--   No live trading validation
+# 🔬 Future Improvements
 
-The system should **not be used with real funds**.
+Planned enhancements for future versions:
 
-------------------------------------------------------------------------
+- Advanced feature engineering
+- Walk-forward validation
+- Robust backtesting engine
+- Risk management module
+- Model ensembling
+- Reinforcement learning agents
+- Real-time trading integration
+- Portfolio optimization
 
-## Disclaimer
+---
 
-This project is for **educational and research purposes only**.
+# ⚠️ Disclaimer
 
-It does not provide financial advice and should not be used to make real
-trading decisions. Cryptocurrency trading carries significant risk.
+This repository is intended **for educational and research purposes only**.
 
-------------------------------------------------------------------------
+It does **not provide financial advice** and should **not be used for real trading decisions**.  
+Cryptocurrency trading carries significant financial risk.
 
-## Future Work
+---
 
-Possible improvements include:
+# 🤝 Contributing
 
--   Better feature engineering
--   Walk-forward validation
--   Robust backtesting engine
--   Risk management system
--   Model ensembling
--   Reinforcement learning agents
--   Live trading integration
+Contributions are welcome.
 
-------------------------------------------------------------------------
+Steps:
 
-Thank You....
+1. Fork the repository
+2. Create a new feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push the branch
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Open a Pull Request
+
+---
+
+# 📜 License
+
+MIT License
+
+You are free to use, modify, and distribute this project.
+
+---
+
+# ⭐ Support
+
+If you find this project useful, consider giving it a **star ⭐ on GitHub**.
